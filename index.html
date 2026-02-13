@@ -3,25 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenBMB Demos</title>
-    <meta http-equiv="refresh" content="0; url=minicpm-o-4_5/">
+    <title>MiniCPM-o 4.5 Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-hero: #e8e4e0;
+            --bg-body: #f5f3f0;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --text-muted: #888888;
+            --accent: #1a1a1a;
+            --border: #e0dcd8;
+            --border-light: #eae6e2;
+            --radius: 8px;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 600px;
+            padding: 40px 24px;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+        }
+        
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 48px;
+        }
+        
+        .cards {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .card {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 32px 28px;
+            width: 240px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+            border: 1px solid var(--border-light);
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            border-color: var(--border);
+        }
+        
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+        
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .card-desc {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .links {
+            margin-top: 48px;
             display: flex;
             justify-content: center;
+            gap: 8px;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background: #f5f3f0;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 500;
         }
-        a {
-            color: #1a1a1a;
-            font-size: 1.2rem;
+        
+        .links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: opacity 0.15s;
+        }
+        
+        .links a:hover { opacity: 0.7; }
+        
+        .links .sep {
+            color: var(--text-muted);
+            margin: 0 12px;
         }
     </style>
 </head>
 <body>
-    <p>Redirecting to <a href="minicpm-o-4_5/">MiniCPM-o 4.5 Demo</a>...</p>
+    <div class="container">
+        <h1>MiniCPM-o 4.5</h1>
+        <p class="subtitle">Demo Pages</p>
+        
+        <div class="cards">
+            <a href="minicpm-o-4_5/" class="card">
+                <div class="card-icon">🎙️</div>
+                <div class="card-title">Audio Cases</div>
+                <div class="card-desc">Voice synthesis, voice cloning, emotional expression & multilingual capabilities</div>
+            </a>
+            <a href="minicpm-o-4_5-omni/" class="card">
+                <div class="card-icon">🎬</div>
+                <div class="card-title">Omni Cases</div>
+                <div class="card-desc">Proactive reminding, real-time captioning, immersive dialogue & multimodal interaction</div>
+            </a>
+        </div>
+        
+        <div class="links">
+            <a href="https://minicpm-omni.openbmb.cn/" target="_blank">DEMO (OFFICIAL)</a>
+            <span class="sep">|</span>
+            <a href="https://github.com/OpenBMB/MiniCPM-o" target="_blank">GITHUB</a>
+            <span class="sep">|</span>
+            <a href="https://huggingface.co/openbmb/MiniCPM-o-4_5" target="_blank">HUGGING FACE</a>
+        </div>
+    </div>
 </body>
 </html>

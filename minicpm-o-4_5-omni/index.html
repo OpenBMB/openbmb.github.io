@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MiniCPM-o 4.5</title>
+    <title>MiniCPM-o 4.5 - Omni Demo</title>
     
-    <!-- Fonts - MiMo-Audio Style (sans-serif only) -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* MiMo-Audio 风格：暖灰色调 */
             --bg-hero: #e8e4e0;
             --bg-body: #f5f3f0;
             --bg-section: #ffffff;
@@ -249,178 +248,130 @@
             border-color: var(--accent);
         }
         
-        /* === Case Content === */
-        .case-content {
+        /* === Tag Content === */
+        .tag-content {
             display: none;
         }
         
-        .case-content.active {
+        .tag-content.active {
             display: block;
         }
         
-        /* === System Block === */
-        .system-block {
-            background: var(--bg-body);
-            border-radius: var(--radius);
-            padding: 20px 24px;
-            margin-bottom: 24px;
+        /* === Video Grid === */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
         }
         
-        .system-title {
+        .video-grid.single {
+            grid-template-columns: 1fr;
+            max-width: 480px;
+        }
+        
+        .video-item {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: #000;
+        }
+        
+        .video-item video {
+            width: 100%;
+            display: block;
+            border-radius: var(--radius);
+        }
+        
+        .video-item {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .video-play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.15);
+            border-radius: var(--radius);
+            transition: background 0.2s;
+            z-index: 2;
+        }
+        
+        .video-play-overlay:hover {
+            background: rgba(0,0,0,0.3);
+        }
+        
+        .play-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+            transition: transform 0.15s;
+        }
+        
+        .video-play-overlay:hover .play-icon {
+            transform: scale(1.08);
+        }
+        
+        .play-icon::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 10px 0 10px 18px;
+            border-color: transparent transparent transparent #333;
+            margin-left: 3px;
+        }
+        
+        .video-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+            text-align: center;
+        }
+        
+        /* === Reference Audio === */
+        .ref-audio-block {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-body);
+            border-radius: var(--radius);
+            padding: 12px 16px;
+            margin-bottom: 16px;
+        }
+        
+        .ref-audio-label {
             font-size: 0.7rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.08em;
             color: var(--text-muted);
-            margin-bottom: 12px;
+            white-space: nowrap;
         }
         
-        .system-row {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 10px;
-            font-size: 0.85rem;
-        }
-        
-        .system-row:last-child {
-            margin-bottom: 0;
-        }
-        
-        .system-label {
-            width: 80px;
-            flex-shrink: 0;
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            padding-top: 4px;
-        }
-        
-        .system-value {
-            flex: 1;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-        
-        .system-value.mono {
-            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
-            font-size: 0.8rem;
-            background: var(--bg-section);
-            padding: 10px 14px;
-            border-radius: var(--radius-sm);
-            line-height: 1.5;
-            color: var(--text-primary);
-        }
-        
-        /* === Conversation === */
-        .conversation {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            max-height: 500px;
-            overflow-y: auto;
-            padding-right: 8px;
-        }
-        
-        .conversation::-webkit-scrollbar {
-            width: 4px;
-        }
-        
-        .conversation::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        
-        .conversation::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 2px;
-        }
-        
-        .conversation::-webkit-scrollbar-thumb:hover {
-            background: var(--text-muted);
-        }
-        
-        .turn {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .turn:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-        
-        .message {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-        }
-        
-        .message-role {
-            width: 60px;
-            flex-shrink: 0;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            padding-top: 2px;
-            text-transform: uppercase;
-            letter-spacing: 0.02em;
-        }
-        
-        .message-content {
-            flex: 1;
-            min-width: 0;
-        }
-        
-        .message.ai .message-role {
-            color: var(--accent);
-        }
-        
-        .message-text {
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: var(--text-primary);
-        }
-        
-        .message-text:not(:last-child) {
-            margin-bottom: 8px;
-        }
-        
-        /* === Audio Player === */
-        .audio-player {
-            display: flex;
-            align-items: center;
-            margin-top: 8px;
-        }
-        
-        .audio-player audio {
+        .ref-audio-block audio {
             height: 32px;
-            width: 100%;
+            flex: 1;
             max-width: 320px;
             border-radius: var(--radius-sm);
-        }
-        
-        /* === Empty State === */
-        .empty-state {
-            text-align: center;
-            padding: 40px 24px;
-            color: var(--text-muted);
-        }
-        
-        .empty-state h3 {
-            font-size: 1rem;
-            font-weight: 500;
-            margin-bottom: 8px;
-            color: var(--text-secondary);
         }
         
         /* === Copy Link Button === */
         .case-header {
             display: flex;
             justify-content: flex-end;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
         }
         
         .copy-link-btn {
@@ -444,6 +395,20 @@
         .copy-link-btn.copied {
             color: #22c55e;
             border-color: #22c55e;
+        }
+        
+        /* === Empty State === */
+        .empty-state {
+            text-align: center;
+            padding: 40px 24px;
+            color: var(--text-muted);
+        }
+        
+        .empty-state h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
         }
         
         /* === Footer Disclaimer === */
@@ -484,18 +449,13 @@
                 font-size: 1.25rem;
             }
             
-            .message {
-                flex-direction: column;
-                gap: 4px;
-            }
-            
-            .message-role {
-                width: auto;
-            }
-            
             .tab-btn {
                 padding: 5px 10px;
                 font-size: 0.75rem;
+            }
+            
+            .video-container {
+                max-width: 100%;
             }
         }
     </style>
@@ -504,7 +464,7 @@
     <!-- Hero -->
     <header class="hero">
         <div class="hero-inner">
-            <h1>MiniCPM-o 4.5 Audio Demo Page</h1>
+            <h1>MiniCPM-o 4.5 Omni Demo Page</h1>
             <div class="hero-links">
                 <a href="https://minicpm-omni.openbmb.cn/" target="_blank">DEMO (OFFICIAL)</a>
                 <span class="sep">|</span>
@@ -515,8 +475,8 @@
                 <a href="https://huggingface.co/openbmb/MiniCPM-o-4_5" target="_blank">HUGGING FACE</a>
             </div>
             <div class="page-nav">
-                <a href="#" class="page-nav-btn active">🎙️ Audio Cases</a>
-                <a href="../minicpm-o-4_5-omni/" class="page-nav-btn">🎬 Omni Cases</a>
+                <a href="../minicpm-o-4_5/" class="page-nav-btn">🎙️ Audio Cases</a>
+                <a href="#" class="page-nav-btn active">🎬 Omni Cases</a>
             </div>
             <div class="lang-switch">
                 <button class="lang-btn" data-lang="zh">中文</button>
@@ -536,7 +496,7 @@
     <!-- Footer Disclaimer -->
     <footer class="footer-disclaimer" id="footerDisclaimer"></footer>
     
-    <!-- Data (single file with multi-lang) -->
+    <!-- Data -->
     <script src="data.js"></script>
     
     <!-- App Logic -->
@@ -544,18 +504,12 @@
         // === State ===
         const state = {
             lang: localStorage.getItem('demo_lang') || 'en',
-            activeCase: {} // { sectionId: caseId }
+            activeTag: {} // { subAbilityId: tagId }
         };
         
         // === i18n ===
         const i18n = {
             zh: {
-                systemSetting: '系统设置',
-                prefix: '前缀',
-                suffix: '后缀',
-                refAudio: '参考音频',
-                user: '用户',
-                ai: 'AI',
                 noData: '数据未加载',
                 ensureFile: '请确保 data.js 文件存在',
                 noCases: '暂无案例',
@@ -564,12 +518,6 @@
                 copied: '✓ 已复制'
             },
             en: {
-                systemSetting: 'System Setting',
-                prefix: 'Prefix',
-                suffix: 'Suffix',
-                refAudio: 'Reference',
-                user: 'User',
-                ai: 'AI',
                 noData: 'Data not loaded',
                 ensureFile: 'Please ensure data.js file exists',
                 noCases: 'No cases available',
@@ -583,20 +531,17 @@
             return i18n[state.lang][key] || key;
         }
         
-        // === Get text from multi-lang object ===
         function getText(obj) {
             if (!obj) return '';
             if (typeof obj === 'string') return obj;
             return obj[state.lang] || obj.zh || obj.en || '';
         }
         
-        // === Switch Language ===
         function switchLang(lang) {
             state.lang = lang;
             localStorage.setItem('demo_lang', lang);
             document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
             
-            // Update lang buttons
             document.querySelectorAll('.lang-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.lang === lang);
             });
@@ -620,22 +565,12 @@
             
             let html = '';
             
-            // 获取当前语言的顺序信息
-            const order = DEMO_DATA.meta?.order?.[state.lang];
-            const abilities = order?.abilities 
-                ? order.abilities.map(id => DEMO_DATA.abilities.find(a => a.id === id)).filter(Boolean)
-                : DEMO_DATA.abilities;
-            
-            abilities.forEach(ability => {
-                // Check if has cases
-                const hasCases = ability.sub_abilities.some(sub => sub.cases && sub.cases.length > 0);
-                if (!hasCases) return;
-                
+            DEMO_DATA.abilities.forEach(ability => {
                 html += `
                     <div class="section">
                         <h2 class="section-title">${getText(ability.name)}</h2>
                         <p class="section-desc">${getText(ability.description)}</p>
-                        ${renderSubAbilities(ability, order)}
+                        ${renderSubAbilities(ability)}
                     </div>
                 `;
             });
@@ -661,42 +596,29 @@
             }
         }
         
-        function renderSubAbilities(ability, order) {
-            // 获取排序后的 sub_abilities
-            const subOrder = order?.sub_abilities?.[ability.id];
-            const subs = subOrder
-                ? subOrder.map(id => ability.sub_abilities.find(s => s.id === id)).filter(Boolean)
-                : ability.sub_abilities;
-            
-            return subs.map(sub => {
-                if (!sub.cases || sub.cases.length === 0) return '';
+        function renderSubAbilities(ability) {
+            return ability.sub_abilities.map(sub => {
+                if (!sub.case_tags || sub.case_tags.length === 0) return '';
                 
-                // 获取排序后的 cases
-                const caseOrder = order?.cases?.[sub.id];
-                const cases = caseOrder
-                    ? caseOrder.map(id => sub.cases.find(c => c.id === id)).filter(Boolean)
-                    : sub.cases;
-                
-                const sectionId = `${ability.id}_${sub.id}`;
-                const activeCase = state.activeCase[sectionId] || (cases[0] ? cases[0].id : null);
+                const activeTag = state.activeTag[sub.id] || sub.case_tags[0].id;
                 
                 return `
                     <div class="subsection">
                         <h3 class="subsection-title">${getText(sub.name)}</h3>
                         <div class="case-card">
-                            <div class="tab-group" data-section="${sectionId}">
-                                ${cases.map((c, i) => `
-                                    <button class="tab-btn ${c.id === activeCase ? 'active' : ''}" 
-                                            data-case="${c.id}">
-                                        ${getText(c.summary) || `Case ${i + 1}`}
+                            <div class="tab-group" data-sub="${sub.id}">
+                                ${sub.case_tags.map(tag => `
+                                    <button class="tab-btn ${tag.id === activeTag ? 'active' : ''}" 
+                                            data-tag="${tag.id}">
+                                        ${getText(tag.name)}
                                     </button>
                                 `).join('')}
                             </div>
-                            ${cases.map(c => `
-                                <div class="case-content ${c.id === activeCase ? 'active' : ''}" 
-                                     id="case-${c.id}"
-                                     data-section="${sectionId}" data-case="${c.id}">
-                                    ${renderCaseContent(c)}
+                            ${sub.case_tags.map(tag => `
+                                <div class="tag-content ${tag.id === activeTag ? 'active' : ''}" 
+                                     id="tag-${tag.id}"
+                                     data-sub="${sub.id}" data-tag="${tag.id}">
+                                    ${renderTagVideos(tag)}
                                 </div>
                             `).join('')}
                         </div>
@@ -705,78 +627,40 @@
             }).join('');
         }
         
-        function renderCaseContent(caseData) {
-            return `
-                <div class="case-header">
-                    <button class="copy-link-btn" data-copy-case="${caseData.id}">${t('copyLink')}</button>
-                </div>
-                ${renderSystemBlock(caseData.system)}
-                ${renderConversation(caseData.turns)}
-            `;
+        function getPosterPath(videoPath) {
+            // videos/xxx.mp4 → videos/posters/xxx.jpg
+            const name = videoPath.replace(/^videos\//, '').replace(/\.mp4$/, '');
+            return `videos/posters/${name}.jpg`;
         }
         
-        function renderSystemBlock(system) {
-            if (!system) return '';
+        function renderTagVideos(tag) {
+            const cases = tag.cases;
+            const isSingle = cases.length === 1;
+            
+            // Check if any case has ref_audio
+            const hasRefAudio = cases.some(c => c.ref_audio);
             
             return `
-                <div class="system-block">
-                    <div class="system-title">${t('systemSetting')}</div>
-                    <div class="system-row">
-                        <span class="system-label">${t('prefix')}</span>
-                        <div class="system-value mono">${escapeHtml(system.prefix || '')}</div>
+                ${hasRefAudio ? cases.filter(c => c.ref_audio).map(c => `
+                    <div class="ref-audio-block">
+                        <span class="ref-audio-label">${state.lang === 'zh' ? '参考音色' : 'Reference'}</span>
+                        <audio controls preload="none">
+                            <source src="${c.ref_audio}" type="audio/wav">
+                        </audio>
                     </div>
-                    ${system.ref_audio ? `
-                        <div class="system-row">
-                            <span class="system-label">${t('refAudio')}</span>
-                            <div class="system-value">
-                                <div class="audio-player">
-                                    <audio controls preload="none">
-                                        <source src="${system.ref_audio}" type="audio/mpeg">
-                                    </audio>
-                                </div>
+                `).join('') : ''}
+                <div class="video-grid ${isSingle ? 'single' : ''}">
+                    ${cases.map((c, i) => `
+                        <div class="video-item" id="case-${c.id}">
+                            <div class="video-play-overlay" data-video-src="${c.video}">
+                                <div class="play-icon"></div>
                             </div>
+                            <video preload="none" playsinline
+                                   poster="${getPosterPath(c.video)}">
+                            </video>
+                            ${!isSingle ? `<div class="video-label">Case ${i + 1}</div>` : ''}
                         </div>
-                    ` : ''}
-                    <div class="system-row">
-                        <span class="system-label">${t('suffix')}</span>
-                        <div class="system-value mono">${escapeHtml(system.suffix || '')}</div>
-                    </div>
-                </div>
-            `;
-        }
-        
-        function renderConversation(turns) {
-            if (!turns || turns.length === 0) return '';
-            
-            return `
-                <div class="conversation">
-                    ${turns.map(turn => renderTurn(turn)).join('')}
-                </div>
-            `;
-        }
-        
-        function renderTurn(turn) {
-            return `
-                <div class="turn">
-                    <div class="message user">
-                        <div class="message-role">${t('user')}</div>
-                        <div class="message-content">
-                            <div class="message-text">${escapeHtml(turn.user_text || '')}</div>
-                        </div>
-                    </div>
-                    <div class="message ai">
-                        <div class="message-role">${t('ai')}</div>
-                        <div class="message-content">
-                            <div class="message-text">${escapeHtml(turn.assistant_text || '')}</div>
-                            ${turn.assistant_audio ? `
-                                <div class="audio-player">
-                                    <audio controls preload="none">
-                                        <source src="${turn.assistant_audio}" type="audio/mpeg">
-                                    </audio>
-                                </div>
-                            ` : ''}
-                        </div>
-                    </div>
+                    `).join('')}
                 </div>
             `;
         }
@@ -787,44 +671,57 @@
             return div.innerHTML;
         }
         
-        function bindEvents() {
-            // Tab switching
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const sectionId = btn.closest('.tab-group').dataset.section;
-                    const caseId = btn.dataset.case;
+        // === Click-to-Play ===
+        function bindVideoOverlays() {
+            document.querySelectorAll('.video-play-overlay').forEach(overlay => {
+                overlay.addEventListener('click', () => {
+                    const videoSrc = overlay.dataset.videoSrc;
+                    const video = overlay.parentElement.querySelector('video');
                     
-                    // Update state
-                    state.activeCase[sectionId] = caseId;
+                    // Load source and add controls
+                    if (!video.querySelector('source')) {
+                        const source = document.createElement('source');
+                        source.src = videoSrc;
+                        source.type = 'video/mp4';
+                        video.appendChild(source);
+                        video.load();
+                    }
+                    video.setAttribute('controls', '');
                     
-                    // Update tabs
-                    btn.closest('.tab-group').querySelectorAll('.tab-btn').forEach(b => {
-                        b.classList.toggle('active', b.dataset.case === caseId);
-                    });
+                    // Remove overlay
+                    overlay.remove();
                     
-                    // Update content
-                    document.querySelectorAll(`.case-content[data-section="${sectionId}"]`).forEach(c => {
-                        c.classList.toggle('active', c.dataset.case === caseId);
-                    });
-                    
-                    // Update URL hash (lang/caseId)
-                    history.replaceState(null, '', '#' + state.lang + '/' + caseId);
+                    // Start playing
+                    video.play();
                 });
             });
-            
-            // Copy link buttons
-            document.querySelectorAll('.copy-link-btn[data-copy-case]').forEach(btn => {
+        }
+        
+        function bindEvents() {
+            // Tag tab switching
+            document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
-                    const caseId = btn.dataset.copyCase;
-                    const url = window.location.origin + window.location.pathname + '#' + state.lang + '/' + caseId;
-                    navigator.clipboard.writeText(url).then(() => {
-                        btn.classList.add('copied');
-                        btn.textContent = t('copied');
-                        setTimeout(() => {
-                            btn.classList.remove('copied');
-                            btn.textContent = t('copyLink');
-                        }, 1500);
+                    const subId = btn.closest('.tab-group').dataset.sub;
+                    const tagId = btn.dataset.tag;
+                    
+                    state.activeTag[subId] = tagId;
+                    
+                    // Update tab buttons
+                    btn.closest('.tab-group').querySelectorAll('.tab-btn').forEach(b => {
+                        b.classList.toggle('active', b.dataset.tag === tagId);
                     });
+                    
+                    // Pause all videos in this sub-section before switching
+                    document.querySelectorAll(`.tag-content[data-sub="${subId}"] video`).forEach(v => {
+                        v.pause();
+                    });
+                    
+                    // Show/hide tag content
+                    document.querySelectorAll(`.tag-content[data-sub="${subId}"]`).forEach(c => {
+                        c.classList.toggle('active', c.dataset.tag === tagId);
+                    });
+                    
+                    history.replaceState(null, '', '#' + state.lang + '/' + tagId);
                 });
             });
             
@@ -834,79 +731,72 @@
                     switchLang(btn.dataset.lang);
                 });
             });
+            
+            // Bind video click-to-play overlays
+            bindVideoOverlays();
         }
         
         // === Hash Navigation ===
-        // Hash format: #lang/caseId (e.g. #zh/english_conv_001)
-        // Also supports legacy #caseId (no lang switch)
         function parseHash() {
             const raw = window.location.hash.slice(1);
             if (!raw) return null;
             const slash = raw.indexOf('/');
             if (slash > 0) {
                 const lang = raw.slice(0, slash);
-                const caseId = raw.slice(slash + 1);
+                const tagId = raw.slice(slash + 1);
                 if (lang === 'zh' || lang === 'en') {
-                    return { lang, caseId };
+                    return { lang, tagId };
                 }
             }
-            // Legacy: #caseId only
-            return { lang: null, caseId: raw };
+            return { lang: null, tagId: raw };
         }
         
         function navigateFromHash() {
             const parsed = parseHash();
             if (!parsed) return;
             
-            // Switch language if specified and different
             if (parsed.lang && parsed.lang !== state.lang) {
                 switchLang(parsed.lang);
-                // switchLang calls render() which rebuilds DOM, need to wait
-                setTimeout(() => navigateToCase(parsed.caseId), 100);
+                setTimeout(() => navigateToTag(parsed.tagId), 100);
             } else {
-                navigateToCase(parsed.caseId);
+                navigateToTag(parsed.tagId);
             }
         }
         
-        function navigateToCase(caseId) {
-            const el = document.getElementById('case-' + caseId);
+        function navigateToTag(tagId) {
+            const el = document.getElementById('tag-' + tagId);
             if (!el) return false;
             
-            const sectionId = el.dataset.section;
+            const subId = el.dataset.sub;
             
-            // Activate tab
-            state.activeCase[sectionId] = caseId;
-            const tabGroup = document.querySelector(`.tab-group[data-section="${sectionId}"]`);
+            state.activeTag[subId] = tagId;
+            const tabGroup = document.querySelector(`.tab-group[data-sub="${subId}"]`);
             if (tabGroup) {
                 tabGroup.querySelectorAll('.tab-btn').forEach(b => {
-                    b.classList.toggle('active', b.dataset.case === caseId);
+                    b.classList.toggle('active', b.dataset.tag === tagId);
                 });
             }
-            document.querySelectorAll(`.case-content[data-section="${sectionId}"]`).forEach(c => {
-                c.classList.toggle('active', c.dataset.case === caseId);
+            document.querySelectorAll(`.tag-content[data-sub="${subId}"]`).forEach(c => {
+                c.classList.toggle('active', c.dataset.tag === tagId);
             });
             
-            // Scroll into view
             el.scrollIntoView({ behavior: 'smooth', block: 'center' });
             return true;
         }
         
         // === Init ===
         document.addEventListener('DOMContentLoaded', () => {
-            // Init lang buttons
             document.querySelectorAll('.lang-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.lang === state.lang);
             });
             document.documentElement.lang = state.lang === 'zh' ? 'zh-CN' : 'en';
             render();
             
-            // Handle hash navigation on load
             if (window.location.hash) {
                 setTimeout(() => navigateFromHash(), 150);
             }
         });
         
-        // Handle hash changes (e.g. back/forward)
         window.addEventListener('hashchange', () => {
             navigateFromHash();
         });
