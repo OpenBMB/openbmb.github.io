@@ -260,13 +260,28 @@
         /* === Video Grid === */
         .video-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 14px;
+            max-width: 680px;
         }
         
         .video-grid.single {
             grid-template-columns: 1fr;
-            max-width: 480px;
+            max-width: 320px;
+        }
+        
+        .video-grid.single.landscape {
+            max-width: 560px;
+        }
+        
+        .video-item.landscape {
+            max-height: none;
+        }
+        
+        .video-item.landscape video,
+        .video-item.landscape img.poster-img {
+            max-height: none;
+            width: 100%;
         }
         
         .video-item {
@@ -274,17 +289,20 @@
             border-radius: var(--radius);
             overflow: hidden;
             background: #000;
+            cursor: pointer;
+            max-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
-        .video-item video {
-            width: 100%;
+        .video-item video,
+        .video-item img.poster-img {
+            max-width: 100%;
+            max-height: 60vh;
             display: block;
             border-radius: var(--radius);
-        }
-        
-        .video-item {
-            position: relative;
-            cursor: pointer;
+            object-fit: contain;
         }
         
         .video-play-overlay {
@@ -307,8 +325,8 @@
         }
         
         .play-icon {
-            width: 56px;
-            height: 56px;
+            width: 44px;
+            height: 44px;
             background: rgba(255,255,255,0.9);
             border-radius: 50%;
             display: flex;
@@ -328,9 +346,9 @@
             width: 0;
             height: 0;
             border-style: solid;
-            border-width: 10px 0 10px 18px;
+            border-width: 8px 0 8px 14px;
             border-color: transparent transparent transparent #333;
-            margin-left: 3px;
+            margin-left: 2px;
         }
         
         .video-label {
@@ -655,9 +673,8 @@
                             <div class="video-play-overlay" data-video-src="${c.video}">
                                 <div class="play-icon"></div>
                             </div>
-                            <video preload="none" playsinline
-                                   poster="${getPosterPath(c.video)}">
-                            </video>
+                            <img class="poster-img" src="${getPosterPath(c.video)}" alt="Video poster"
+                                 loading="lazy">
                             ${!isSingle ? `<div class="video-label">Case ${i + 1}</div>` : ''}
                         </div>
                     `).join('')}
@@ -671,22 +688,56 @@
             return div.innerHTML;
         }
         
+        // === Detect orientation from poster images ===
+        function detectVideoOrientation() {
+            document.querySelectorAll('img.poster-img').forEach(img => {
+                function applyOrientation() {
+                    if (img.naturalWidth > img.naturalHeight) {
+                        // Landscape video
+                        const item = img.closest('.video-item');
+                        const grid = img.closest('.video-grid');
+                        if (item) item.classList.add('landscape');
+                        if (grid) grid.classList.add('landscape');
+                    }
+                }
+                if (img.complete && img.naturalWidth > 0) {
+                    applyOrientation();
+                } else {
+                    img.addEventListener('load', applyOrientation);
+                }
+            });
+        }
+        
         // === Click-to-Play ===
         function bindVideoOverlays() {
             document.querySelectorAll('.video-play-overlay').forEach(overlay => {
                 overlay.addEventListener('click', () => {
                     const videoSrc = overlay.dataset.videoSrc;
-                    const video = overlay.parentElement.querySelector('video');
+                    const container = overlay.parentElement;
+                    const posterImg = container.querySelector('img.poster-img');
                     
-                    // Load source and add controls
-                    if (!video.querySelector('source')) {
-                        const source = document.createElement('source');
-                        source.src = videoSrc;
-                        source.type = 'video/mp4';
-                        video.appendChild(source);
-                        video.load();
-                    }
+                    // Create video element to replace poster image
+                    const isLandscape = container.classList.contains('landscape');
+                    const video = document.createElement('video');
                     video.setAttribute('controls', '');
+                    video.setAttribute('playsinline', '');
+                    video.style.maxWidth = '100%';
+                    video.style.display = 'block';
+                    video.style.borderRadius = 'var(--radius)';
+                    if (!isLandscape) {
+                        video.style.maxHeight = '60vh';
+                        video.style.objectFit = 'contain';
+                    } else {
+                        video.style.width = '100%';
+                    }
+                    
+                    const source = document.createElement('source');
+                    source.src = videoSrc;
+                    source.type = 'video/mp4';
+                    video.appendChild(source);
+                    
+                    // Replace poster with video
+                    if (posterImg) posterImg.replaceWith(video);
                     
                     // Remove overlay
                     overlay.remove();
@@ -734,6 +785,9 @@
             
             // Bind video click-to-play overlays
             bindVideoOverlays();
+            
+            // Detect landscape/portrait orientation
+            detectVideoOrientation();
         }
         
         // === Hash Navigation ===
